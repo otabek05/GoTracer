@@ -1,8 +1,10 @@
 package ws
 
 import (
+	"encoding/json"
 	"fmt"
 	"gotrace/internal/capture"
+	"gotrace/internal/model"
 
 	"github.com/gorilla/websocket"
 )
@@ -26,9 +28,15 @@ func (c *Client) read() {
 			break
 		}
 
-		message := string(msg)
+		var wsMessage model.WSIncomingMessage
+		err = json.Unmarshal(msg, &wsMessage)
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
 
-		switch message {
+
+		switch wsMessage.Message {
 		case "Start":
 			c.engine.Start(&c.Send)
 		case "Stop":
