@@ -5,7 +5,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { ParsedPacket } from "src/types/ws_receiving";
-import { Iconify } from "src/components/iconify";
+import { Iconify } from "src/components/iconify/iconify";
 
 interface PacketItemProps {
   packet: ParsedPacket;

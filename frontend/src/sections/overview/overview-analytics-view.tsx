@@ -19,7 +19,7 @@ import { PacketItem } from "./layers";
 import { CustomSelect } from "src/components/option/CustomSelect";
 import { applicationLayerOptions, networkLayerOptions, Service, trafficOptions, transportLayerOptions, wellKnownServicesOptions } from "src/constansts/capture";
 import { ServiceSelect } from "./serviceSelector";
-import { Iconify } from "src/components/iconify";
+import { Iconify } from "src/components/iconify/iconify";
 import SearchInputWithButton from "src/components/option/SearchInput";
 import { validatePort } from "src/utils/valid_port";
 import { NetworkInterface } from "src/types/net_interface";

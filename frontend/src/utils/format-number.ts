@@ -1,3 +1,5 @@
+
+/*
 export type InputNumberValue = string | number | null | undefined;
 
 type Options = Intl.NumberFormatOptions;
@@ -79,3 +81,6 @@ export function fShortenNumber(inputValue: InputNumberValue, options?: Options) 
 
   return fm.replace(/[A-Z]/g, (match) => match.toLowerCase());
 }
+
+
+*/

@@ -1,9 +1,10 @@
+
+import { Iconify } from 'src/components/iconify/iconify';
 import { Label } from 'src/components/label';
-import { SvgColor } from 'src/components/svg-color';
 
 // ----------------------------------------------------------------------
 
-const icon = (name: string) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} />;
+const icon = (name: string) => <Iconify icon={name} color={"red"} width={30} height={30} />;
 
 export type NavItem = {
   title: string;
