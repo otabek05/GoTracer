@@ -58,5 +58,5 @@ export interface WebSocketTX {
   transport?: TransportLayer;
   applicationLayer?: ApplicationLayer;
   interface?: NetworkInterface;
-  services: string[] | null;
+  services?: string[] | null;
 } 

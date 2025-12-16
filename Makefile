@@ -5,7 +5,9 @@ BUILD_DIR := build
 .PHONY: linux darwin windows frontend
 
 frontend:
-	cd frontend && npm run build
+	cd frontend && \
+	npm install && \
+	npm run build
 
 linux: frontend
 	cd $(BACKEND_DIR) && \
