@@ -40,15 +40,12 @@ axiosWithToken?.interceptors.request.use(
     
 )
 
-// Add an interceptor to handle Refresh Token request
 
 axiosWithToken?.interceptors.response.use(
     (response) =>  response,
     async (error) => {
         const originalRequest = error.config;
         console.log(error)
-        // Check if the error status is due to token expiration
-        // refreshToken
         if (error.response && error.response.status === 403 && !originalRequest._retry) {
             if (!isRefreshing) {
                 isRefreshing = true

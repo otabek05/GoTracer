@@ -11,6 +11,6 @@ func NewRouter() http.Handler {
 	go ws.DefaultHub.Run()
 		
 	mux.HandleFunc("/ws", ws.DefaultHub.ServeWS)
-	mux.HandleFunc("/api/v1/interfaces", NetInterfaceHandler)
+	mux.HandleFunc("/api/v1/network/interfaces", NetInterfaceHandler)
 	return withCORS(mux)
 }

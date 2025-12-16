@@ -2,10 +2,10 @@ import axios from "axios";
 
 
 
-export function handleError(e:any): Error {
+export function handleError(e:any): string {
     if (axios.isAxiosError(e)) {
-        return new  Error(e.response?.data?.message)
+        return e.response?.data?.message
     }
 
-    return new Error("unknown error")
+    return "unknown error"
 }
