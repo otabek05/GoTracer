@@ -12,7 +12,7 @@ import { NetworkInterface } from "../../types/netInterface";
 import { ApplicationLayer, ApplicationLayerList, NetworkLayer, NetworkLayerList, TrafficOptions, TrafficOptionsList, TransportLayer, TransportLayerList } from "../../types/wsTX";
 import { Service, wellKnownServicesOptions } from "../../contstants/capture";
 import { validatePort } from "../../utils/validatePort";
-import { getNetworkInterfaces } from "../../services/networkService";
+import { getIPFromDomain, getNetworkInterfaces } from "../../services/networkService";
 import { NetSelector } from "./NetworkSelector";
 import { CustomSelect } from "../../components/options/CustomSelect";
 import { ServiceSelect } from "./ServiceSelector";
@@ -31,18 +31,27 @@ export default function CaptureView() {
   const [applicationLayer, setApplicationLayer] = useState<ApplicationLayer>("any")
   const [selectedServices, setSelectedServices] = useState<Service[]>([])
   const [customInput, setCustomInput] = useState<string>("")
+  const [domain, setDomain] = useState<string>("")
+  const [selectedIP, setSelectedIP] = useState<string>("")
+
 
   useEffect(()=>{
     fetchNetInterfaces()
   },[])
 
-  const handleApply = () => {
+  const handleApply = async() => {
+    if (domain !== "") {
+      const response  = await getIPFromDomain(domain)
+      console.log(response)
+      return
+    }
+
     send({
       type: "start_capturing",
       trafficOptions: trafficOption,
       networkLayer,
       transport: transportLayer,
-      services: buildServices(),
+      services: applicationLayer != "any" ? buildServices(): null,
       interface: selectedInterface!
     });
   };
@@ -110,6 +119,12 @@ export default function CaptureView() {
           pb: 2,
         }}
       >
+
+        <SearchInputWithButton 
+        placeholder="Filter By Domain"
+        onChange={(val:string) => { setDomain(val) }} 
+        onSearch={onSearch} 
+        value={domain} />
 
         <NetSelector 
           label="Network Interface"

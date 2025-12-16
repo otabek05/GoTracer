@@ -13,3 +13,13 @@ export const getNetworkInterfaces = async(): Promise<ApiResponse<NetworkInterfac
         return  ApiResponse.error(handleError(e))
     }
 }
+
+
+export const getIPFromDomain = async(domain:string): Promise<ApiResponse<string | null>> => {
+    try {
+        const response = await axiosWithToken.get("/api/v1/network/domain", {params:{domain:domain}})
+        return response.data
+    }catch(e) {
+        return ApiResponse.error(handleError(e))
+    }
+}
