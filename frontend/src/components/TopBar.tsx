@@ -8,43 +8,41 @@ const menuItems = [
   {
     label: "Packet Capture",
     path: "/capture",
-    icon: "mdi:access-point-network",
+    icon: "mdi:network",
     color: "#4caf50",
   },
   {
     label: "Port Scan",
     path: "/port-scan",
-    icon: "mdi:lan-connect",
+    icon: "mdi:network-strength-1", 
     color: "#2196f3",
   },
-
   {
-    label: "LAN",
-    path: "/port-scan",
-    icon: "mdi:lan-connect",
-    color: "#2196f3",
+    label: "LAN Info",
+    path: "/lan",
+    icon: "mdi:lan", 
+    color: "#00bcd4",
   },
-
   {
-    label: "OS",
-    path: "/port-scan",
-    icon: "mdi:lan-connect",
-    color: "#2196f3",
+    label: "OS Info",
+    path: "/os",
+    icon: "mdi:desktop-classic", 
+    color: "#795548",
   },
-
   {
-    label: "Wifi",
-    path: "/nmap",
-    icon: "mdi:radar",
+    label: "Wi-Fi Scan",
+    path: "/wifi",
+    icon: "mdi:wifi", 
     color: "#ff9800",
   },
   {
     label: "Other Tools",
     path: "/tools",
-    icon: "mdi:tools",
+    icon: "mdi:tools", 
     color: "#9c27b0",
   },
 ];
+
 
 
 export default function TopBar() {
