@@ -32,7 +32,6 @@ func NewRouter() http.Handler {
 		c.File("../../build/web/index.html")
 	})
 	
-
 	return router
 }
 
