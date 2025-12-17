@@ -127,5 +127,6 @@ type DHCP struct {
 
 type AppLayer struct {
 	Protocol string `json:"protocol"`
-	Data     any    `json:"data"`
+	Length   int    `json:"length"`
+	Data     string    `json:"data"`
 }

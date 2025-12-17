@@ -62,7 +62,6 @@ func (h *Hub) ServeWS(w http.ResponseWriter, r *http.Request) {
 		conn: conn,
 		IP:  ip,
 		engine: engine,
-		Send: make(chan []byte),
 	}
 
 	h.register <- client

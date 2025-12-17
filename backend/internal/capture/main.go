@@ -1,6 +1,7 @@
 package capture
 
 import (
+	"context"
 	"fmt"
 	"gotracer/internal/model"
 	"gotracer/internal/parser"
@@ -17,10 +18,12 @@ type Engine struct {
 	conn   *websocket.Conn
 	parser *parser.PacketParser
 	mux *sync.Mutex
+
+	ctx    context.Context
+	cancel context.CancelFunc
 }
 
 func New(conn *websocket.Conn) *Engine {
-
 	return &Engine{
 		mux: &sync.Mutex{},
 		parser: parser.New(),
@@ -29,6 +32,8 @@ func New(conn *websocket.Conn) *Engine {
 }
 
 func (e *Engine) Start(msg *model.WebSocketRX) error {
+	e.Stop()
+	
 	h, err := pcap.OpenLive(msg.NetworkInterface.Name, 65535, true, pcap.BlockForever)
 	if err != nil {
 		return err
@@ -40,9 +45,11 @@ func (e *Engine) Start(msg *model.WebSocketRX) error {
 		e.handle.SetBPFFilter(filters)
 	}
 
-	isOutgoingTraffic := msg.TrafficOptions == string(model.OUTGOING)
-	isIncomingTraffic := msg.TrafficOptions == string(model.INCOMING)
-	go e.loop(msg.NetworkInterface.Addresses[0].IP, isIncomingTraffic, isOutgoingTraffic)
+	ctx, cancel := context.WithCancel(context.Background())
+	e.ctx = ctx
+	e.cancel = cancel
+
+	go e.loop(msg)
 
 	return nil
 }

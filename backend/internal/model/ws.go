@@ -10,16 +10,16 @@ type WebSocketRX struct {
 	Transport           string         `json:"transport"`
 	ApplicationServices []string       `json:"services"`
 	NetworkInterface    pcap.Interface `json:"interface"`
+	IPv4                *string         `json:"ipv4"`
 }
 
 type WebSocketTX struct {
-	Type    string        `json:"type"`
-	Packets *ParsedPacket `json:"packets,omitempty"`
+	Type          string         `json:"type"`
+	Packets       *ParsedPacket  `json:"packets,omitempty"`
 	InternetSpeed *InternetSpeed `json:"internetSpeed"`
 }
 
-
 type InternetSpeed struct {
-	BytesIn string `json:"bytesIn"`
-	BytesOut  string `json:"bytesOut"`
+	BytesIn  string `json:"bytesIn"`
+	BytesOut string `json:"bytesOut"`
 }

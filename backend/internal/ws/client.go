@@ -13,7 +13,6 @@ type Client struct {
 	conn   *websocket.Conn
 	engine *capture.Engine
 	IP     string
-	Send   chan []byte
 }
 
 func (c *Client) read() {
@@ -36,28 +35,19 @@ func (c *Client) read() {
 
 		switch wsMessage.Type {
 		case "start_capturing":
-			c.engine.Stop()
 			c.engine.Start(&wsMessage)
-		case "Stop":
+		case "stop_capturing":
 			c.engine.Stop()
 		}
 
 		fmt.Println(wsMessage)
+
 	}
 }
 
 
-func (c *Client) write() {
-	for msg := range c.Send {
-		err := c.conn.WriteMessage(websocket.TextMessage, msg)
-		if err != nil {
-			break
-		}
-	}
-}
 
 func (c *Client) stop() {
 	c.conn.Close()
 	c.engine.Stop()
-	close(c.Send)
 }

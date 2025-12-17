@@ -22,7 +22,7 @@ import { Icon } from "@iconify/react";
 
 
 export default function CaptureView() {
-  const { connected, messages, send, clearMessages } = useWebSocket();
+  const { connected, messages, send, clearMessages, stopCapturing } = useWebSocket();
   const [interfaces, setInterfaces] = useState<NetworkInterface[]>([])
   const [selectedInterface, setSelectedInterface] = useState<NetworkInterface | null>(null)
   const [trafficOption, setTrafficOption] = useState<TrafficOptions>("any");
@@ -40,7 +40,7 @@ export default function CaptureView() {
   },[])
 
   const handleApply = async() => {
-    
+
     let selectedIPAddress = ""
     if (domain !== "") {
       const response  = await getIPFromDomain(domain)
@@ -54,7 +54,7 @@ export default function CaptureView() {
       transport: transportLayer,
       services: applicationLayer != "any" ? buildServices(): null,
       interface: selectedInterface!,
-      ipv4: selectedIPAddress
+      ipv4: selectedIPAddress != "" ? selectedIPAddress : null
     });
   };
 
@@ -192,6 +192,10 @@ export default function CaptureView() {
 
         <Button variant="contained" onClick={handleApply}>
           Apply
+        </Button>
+
+         <Button variant="contained" color="error"  onClick={stopCapturing}>
+          Stop
         </Button>
 
         <Button variant="outlined" onClick={clearMessages}>
