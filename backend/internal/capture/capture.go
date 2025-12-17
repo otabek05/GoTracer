@@ -150,8 +150,6 @@ func (e *Engine) handlePacket(p gopacket.Packet, prop *PacketProp)  {
 }
 
 
-
-
 func (e *Engine) handleSpeed(prop *PacketProp) {
 	speed := &model.InternetSpeed{
 		BytesIn:  utils.FormatBytesPerSec(prop.bytesIn),
