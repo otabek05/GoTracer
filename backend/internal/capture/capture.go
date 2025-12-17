@@ -27,7 +27,7 @@ func (e *Engine) loop(ifaceAddr net.IP, incomingDirection, outgoingDirection boo
 			BytesOut: formatBytesPerSec(bytesOut),
 		}
 
-		data := &model.WSSendingMessage{
+		data := &model.WebSocketTX{
 			Type: "speed",
 			InternetSpeed: speed,
 		}
@@ -114,7 +114,7 @@ func (e *Engine) loop(ifaceAddr net.IP, incomingDirection, outgoingDirection boo
 			}
 		}
 
-		data := &model.WSSendingMessage{
+		data := &model.WebSocketTX{
 			Type: "packets",
 			Packets: &parsedLayers,
 		}

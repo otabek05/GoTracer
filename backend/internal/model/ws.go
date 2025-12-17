@@ -2,7 +2,7 @@ package model
 
 import "github.com/google/gopacket/pcap"
 
-type WSReceiveMessage struct {
+type WebSocketRX struct {
 	Type                string         `json:"type"`
 	Message             any            `json:"message"`
 	TrafficOptions      string         `json:"trafficOptions"`
@@ -12,7 +12,7 @@ type WSReceiveMessage struct {
 	NetworkInterface    pcap.Interface `json:"interface"`
 }
 
-type WSSendingMessage struct {
+type WebSocketTX struct {
 	Type    string        `json:"type"`
 	Packets *ParsedPacket `json:"packets,omitempty"`
 	InternetSpeed *InternetSpeed `json:"internetSpeed"`

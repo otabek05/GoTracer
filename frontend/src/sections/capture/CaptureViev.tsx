@@ -40,10 +40,11 @@ export default function CaptureView() {
   },[])
 
   const handleApply = async() => {
+    
+    let selectedIPAddress = ""
     if (domain !== "") {
       const response  = await getIPFromDomain(domain)
-      console.log(response)
-      return
+      selectedIPAddress = response.data ? response.data![0] : ""
     }
 
     send({
@@ -52,7 +53,8 @@ export default function CaptureView() {
       networkLayer,
       transport: transportLayer,
       services: applicationLayer != "any" ? buildServices(): null,
-      interface: selectedInterface!
+      interface: selectedInterface!,
+      ipv4: selectedIPAddress
     });
   };
 

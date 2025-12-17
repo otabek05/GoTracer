@@ -54,7 +54,7 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
             setMessages((prev) => [...prev, data.packets!]);
             console.log(data)
         }else if (data.type == "speed") {
-
+           setSpeed(data.internetSpeed!);
         }
 
       } catch {

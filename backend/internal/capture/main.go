@@ -28,7 +28,7 @@ func New(conn *websocket.Conn) *Engine {
 	}
 }
 
-func (e *Engine) Start(msg *model.WSReceiveMessage) error {
+func (e *Engine) Start(msg *model.WebSocketRX) error {
 	h, err := pcap.OpenLive(msg.NetworkInterface.Name, 65535, true, pcap.BlockForever)
 	if err != nil {
 		return err
@@ -47,7 +47,7 @@ func (e *Engine) Start(msg *model.WSReceiveMessage) error {
 	return nil
 }
 
-func buildBPFFilter(msg *model.WSReceiveMessage) string {
+func buildBPFFilter(msg *model.WebSocketRX) string {
 	var filters []string
 
 	switch msg.Transport {

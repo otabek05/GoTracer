@@ -27,7 +27,7 @@ func (c *Client) read() {
 			return
 		}
 
-		var wsMessage model.WSReceiveMessage
+		var wsMessage model.WebSocketRX
 		err = json.Unmarshal(msg, &wsMessage)
 		if err != nil {
 			fmt.Println(err)
