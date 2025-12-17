@@ -19,10 +19,11 @@ import { ServiceSelect } from "./ServiceSelector";
 import { PacketItem } from "./Layers";
 import SearchInputWithButton from "../../components/options/SearchInput";
 import { Icon } from "@iconify/react";
+import SpeedIndicator from "./SpeedIndicator";
 
 
 export default function CaptureView() {
-  const { connected, messages, send, clearMessages, stopCapturing } = useWebSocket();
+  const { connected, messages, send, clearMessages, stopCapturing, speed } = useWebSocket();
   const [interfaces, setInterfaces] = useState<NetworkInterface[]>([])
   const [selectedInterface, setSelectedInterface] = useState<NetworkInterface | null>(null)
   const [trafficOption, setTrafficOption] = useState<TrafficOptions>("any");
@@ -236,6 +237,10 @@ export default function CaptureView() {
       <Typography variant="body2" sx={{ mt: 1, opacity: 0.6 }}>
         WebSocket Status: {connected ? "🟢 Connected" : "🔴 Disconnected"}
       </Typography>
+
+      {speed != null && (
+        <SpeedIndicator speed={speed}/>
+      )}
 
       {/* PACKETS */}
       <Paper

@@ -1,8 +1,6 @@
 package capture
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
 	"gotracer/internal/model"
 	"gotracer/internal/utils"
@@ -19,15 +17,10 @@ type PacketProp struct {
 	outgoingTraffic bool
 	iface net.IP
 	targetIP *string
-	bytesIn uint64
-	bytesOut uint64
 
 }
 
 func (e *Engine) loop(msg *model.WebSocketRX) {
-	ticker := time.NewTicker(time.Second)
-	defer ticker.Stop()
-
 	src := gopacket.NewPacketSource(e.handle, e.handle.LinkType())
 
 	prop := PacketProp{
@@ -44,8 +37,6 @@ func (e *Engine) loop(msg *model.WebSocketRX) {
 		select {
 		case <-e.ctx.Done():
 			return
-		case <-ticker.C:
-			e.handleSpeed(&prop)
 		case p, ok := <- packetChan:
 			if !ok {
 			   return 
@@ -64,31 +55,31 @@ func (e *Engine) handlePacket(p gopacket.Packet, prop *PacketProp)  {
 		return
 	}
 
-	fmt.Println("Request has been arrived to handlePack")
-	size := uint64(len(p.Data()))
 	src := net.ParseIP(network.NetworkFlow().Src().String())
 	dst := net.ParseIP(network.NetworkFlow().Dst().String())
 
 	if src.Equal(net.IP(prop.iface)) {
-		prop.bytesIn += size
 		parsedLayers.Direction = model.OUTGOING
 		if prop.incomingTraffic {
 			return
 		}
-
+		
+		
 		if prop.targetIP != nil && !strings.EqualFold(dst.String(), *prop.targetIP) {
+			fmt.Printf("SRC: %s  Target: %s \n", dst.String(), *prop.targetIP)
 			return
 		}
 
 	} else if dst.Equal(net.IP(prop.iface)) {
-		prop.bytesOut += size
 		parsedLayers.Direction = model.INCOMING
 
 		if prop.outgoingTraffic {
 			return
 		}
 
+		
 		if prop.targetIP != nil && !strings.EqualFold(src.String(), *prop.targetIP) {
+			fmt.Printf("DST: %s  Target: %s \n", src.String(), *prop.targetIP)
 			return 
 		}
 
@@ -138,33 +129,7 @@ func (e *Engine) handlePacket(p gopacket.Packet, prop *PacketProp)  {
 		Packets: &parsedLayers,
 	}
 
-	var buf bytes.Buffer
-	enc := json.NewEncoder(&buf)
-	enc.SetEscapeHTML(false)
-	enc.Encode(data)
-
-	if err := e.write(data); err != nil {
-		fmt.Println(err)
-		return
-	}
+	e.write(data)
 }
 
 
-func (e *Engine) handleSpeed(prop *PacketProp) {
-	speed := &model.InternetSpeed{
-		BytesIn:  utils.FormatBytesPerSec(prop.bytesIn),
-		BytesOut: utils.FormatBytesPerSec(prop.bytesOut),
-	}
-
-	data := &model.WebSocketTX{
-		Type:          "speed",
-		InternetSpeed: speed,
-	}
-
-	if err := e.write(data); err != nil {
-		return 
-	}
-
-	prop.bytesIn = 0
-	prop.bytesOut = 0
-}

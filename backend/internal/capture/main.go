@@ -99,7 +99,7 @@ func (e *Engine) Stop() {
 }
 
 
-func (e *Engine) write(data any) error {
+func (e *Engine) write(data any) {
 	e.mux.Lock()
 	defer e.mux.Unlock()
 
@@ -107,6 +107,9 @@ func (e *Engine) write(data any) error {
 	enc := json.NewEncoder(&buf)
 	enc.SetEscapeHTML(false)
 	enc.Encode(data)
-	
-	return  e.conn.WriteMessage(websocket.TextMessage, buf.Bytes())
+
+	err := e.conn.WriteMessage(websocket.TextMessage, buf.Bytes())
+	if err != nil {
+		e.Stop()
+	}
 }

@@ -4,6 +4,7 @@ import type { WebSocketTX } from "../types/wsTX";
 
 interface WebSocketContextType {
   connected: boolean;
+  speed: InternetSpeed | null;
   messages: ParsedPacket[];
   connect: (url: string) => void;
   disconnect: () => void;
@@ -108,6 +109,7 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
       value={{
         connected,
         messages,
+        speed,
         connect,
         disconnect,
         send,
